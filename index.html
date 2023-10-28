@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>lab 1 Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+        }
+    </style>
+    <script type="text/javascript">
+        const localStorage = window.localStorage;
+        const initialize = () => {
+            if (localStorage) {
+                const count = localStorage.getItem("visitCount") || 0;
+                const newCount = parseInt(count) + 1;
+                localStorage.setItem("visitCount", newCount);
+                updateDOM();
+            }
+        };
+        const updateDOM = () => {
+            const count = localStorage.getItem("visitCount") || 0;
+            document.getElementById(
+                "visitCount"
+            ).innerHTML = `Visit count ${count}`;
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Welcome To My Local Storage Demo</h1>
+
+    <table style="width:50%;margin:auto;">
+        <tr>
+            <th colspan="2">Personal Info</th>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="images/Vick.jpg" alt="Your Passport Picture"
+                    style="width:150px;height:150px;border-radius: 50%;"></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td>Victor Kipkemei</td>
+        </tr>
+        <tr>
+            <td>Registration Number:</td>
+            <td>Sct222-0201/2020</td>
+        </tr>
+    </table>
+
+    <h6>Color Preferences</h6>
+    <button onclick="setColorPreference('Deepskyblue')">Deepskyblue</button>
+    <button onclick="setColorPreference('Aqua')">Aqua</button>
+    <button onclick="setColorPreference('DodgerBlue')">DodgerBlue</button>
+
+    <script>
+        function setColorPrefrence(color) {
+            var preference = {
+                color: color
+            };
+
+            localStorage.setItem("userPreference", JSON.stringify(preference));
+            updateDOM(color);
+        }
+
+        function updateDOM(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        var storedPreference = localStorage.getItem("userPreference");
+
+        if (storedPreference) {
+            var preference = JSON.parse(storedPreference);
+            updateDOM(preference.color);
+        }
+    </script>
+    <script>
+
+        function setColorPreference(color) {
+            document.body.style.backgroundColor = color;
+
+        }
+
+    </script>
+
+
+    <div class="karibu"> welcome <span id="welcomeMessage"></span></div>
+    <script>
+        var storedName = localStorage.getItem("userName");
+        var welcomeMessageSpan = document.getElementById("welcomeMessage");
+
+        if (storedName) {
+            welcomeMessageSpan.innerHTML = storedName + "!";
+            alert("Welcome, " + storedName + "!");
+        } else {
+            var userName = prompt("Please enter your name:");
+
+            if (userName) {
+                localStorage.setItem("userName", userName);
+                welcomeMessageSpan.innerHTML = "Welcome, " + userName + "!";
+                alert("Welcome, " + userName + "!");
+            } else {
+                welcomeMessageSpan.innerHTML = "You didn't enter your name. Please refresh the page and try again.";
+            }
+        }
+    </script>
+
+
+    <div class="friend">who is your best friend?</div>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <input type="number" id="ageInput" placeholder="Enter your age">
+    <button onclick="storeUserInput()">Store</button>
+
+    <script>
+        function storeUserInput() {
+            var name = document.getElementById("nameInput").value;
+            var age = document.getElementById("ageInput").value;
+
+            var user = {
+                name: name,
+                age: age
+            };
+
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+    </script>
+
+
+    <p id="userData"></p>
+
+    <script>
+        var storedUserData = localStorage.getItem("user");
+
+        if (storedUserData) {
+            var user = JSON.parse(storedUserData);
+
+            document.getElementById("userData").textContent = "Name: " + user.name + ", Age: " + user.age;
+        } else {
+            document.getElementById("userData").textContent = "User data not found in localStorage.";
+        }
+    </script>
+
+    <button onclick="clearLocalStorage()">Clear Local Storage</button>
+
+    <script>
+        function clearLocalStorage() {
+            localStorage.clear();
+            alert("Local storage cleared.");
+            location.reload();
+        }
+    </script>
+
+    <button onclick="clearVisitCount()">Clear Visit Count</button>
+    <script>
+        function clearVisitCount() {
+            localStorage.removeItem("visitCount");
+            // Optionally, you can add additional code to update the displayed visit count.
+            updateDOM();
+        }
+    </script>
+    <button onclick="showStoredObjects()">Show Stored Objects</button>
+    <ul id="storedObjectsList"></ul>
+
+    <script>
+        function showStoredObjects() {
+            var storedObjectsList = document.getElementById("storedObjectsList");
+            storedObjectsList.innerHTML = ''; // Clear the previous list
+
+            for (var key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    var listItem = document.createElement("li");
+                    listItem.textContent = `${key}: ${localStorage.getItem(key)}`;
+                    storedObjectsList.appendChild(listItem);
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
